@@ -6,6 +6,9 @@ import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { IoIosImages } from "react-icons/io";
 import { BiTrash } from "react-icons/bi";
+import { useSelector } from "react-redux";
+import { API_URL } from "../config";
+import { useNavigate } from "react-router-dom";
 
 const CreateListing = () => {
   const [category, setCategory] = useState("");
@@ -47,6 +50,8 @@ const CreateListing = () => {
     }
   };
 
+
+
   // Description
   const [formDescription, setFormDescription] = useState({
     title: "",
@@ -63,8 +68,6 @@ const CreateListing = () => {
       [name]: value,
     });
   };
-
-console.log(formDescription)
 
   //upload, drag and drop, remove photos
   const [photos, setPhotos] = useState([]);
@@ -90,12 +93,62 @@ console.log(formDescription)
     );
   };
 
+  // Submit
+  const creatorId = useSelector(state => state.user._id);
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      // creating FormData to handle file uploads
+      const listingForm = new FormData()
+
+      listingForm.append("creator", creatorId);
+      listingForm.append("category", category);
+      listingForm.append("type", type);
+      listingForm.append("streetAddress", formLocation.streetAddress);
+      listingForm.append("aptSuite", formLocation.aptSuite);
+      listingForm.append("city", formLocation.city);
+      listingForm.append("state", formLocation.state);
+      listingForm.append("country", formLocation.country);
+      listingForm.append("guestCount",guestCount );
+      listingForm.append("bedroomCount", bedroomCount);
+      listingForm.append("bedCount", bedCount);
+      listingForm.append("bathroomCount", bathroomCount);
+      listingForm.append("amenities", amenities);
+      listingForm.append("title", formDescription.title);
+      listingForm.append("description", formDescription.description );
+      listingForm.append("highlight", formDescription.highlight );
+      listingForm.append("highlightDesc", formDescription.highlightDesc);
+      listingForm.append("price", formDescription.price);
+
+      // Append each selected photos to formdata object
+      photos.forEach(photo => {
+        listingForm.append("listingPhotos", photo);
+      })
+
+      // send a post request
+      const response = await fetch(`${API_URL}/properties/create`,{
+        method: "POST",
+        body: listingForm
+      })
+      
+      if(response.ok){
+        navigate("/")
+      }
+
+    } catch (err) {
+      console.log("Failed to publish listing, ", err.message)
+    }
+  }
+
   return (
     <>
       <Navbar />
       <div className="create-listing">
         <h1>Publish your Place</h1>
-        <form>
+        <form onSubmit={handleSubmit}> 
           <div className="create-listing_step1">
             <h2>Step 1: Tell us about your place</h2>
             <hr />
@@ -262,10 +315,10 @@ console.log(formDescription)
               {facilities.map((item, index) => (
                 <div
                   className={`facility ${
-                    amenities.includes(item) ? "selected" : ""
+                    amenities.includes(item.name) ? "selected" : ""
                   }`}
                   key={index}
-                  onClick={() => handleSelectAmenities(item)}
+                  onClick={() => handleSelectAmenities(item.name)}
                 >
                   <div className="facility_icon">
                     <item.icon />
@@ -408,6 +461,7 @@ console.log(formDescription)
               />
             </div>
           </div>
+          <button className="submit_btn" type="submit">CREATE YOUR LISTING</button>
         </form>
       </div>
     </>
