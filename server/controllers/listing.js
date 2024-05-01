@@ -66,18 +66,21 @@ export const createListing = async (req, res) => {
 
 export const getListingByCategory = async (req, res) => {
   const qCategory = req.query.category;
+  const page = parseInt(req.query.page) || 1; // Default to page 1
+  const limit = parseInt(req.query.limit) || 8; // Default limit to 15 listings per page
 
   try {
-    let listings;
-    if (qCategory) {
-      listings = await Listing.find({ category: qCategory }).populate(
-        "creator"
-      );
-    } else {
-      listings = await Listing.find().populate("creator");
-    }
+    let query = qCategory ? { category: qCategory } : {};
 
-    res.status(200).json(listings);
+    const total = await Listing.countDocuments(query);
+
+    // Getting list using pagination
+    const listings = await Listing.find(query)
+      .populate("creator")
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    res.json({ results: listings, total: total }); 
   } catch (err) {
     res.status(409).json({
       message: "Fail to fetch listings",
@@ -90,22 +93,27 @@ export const getListingByCategory = async (req, res) => {
 // Get listing by search
 export const getListingBySearch = async (req, res) => {
   const { search } = req.params;
+  const page = parseInt(req.query.page) || 1; // Default to page 1
+  const limit = parseInt(req.query.limit) || 8; // Default limit to 15 listings per page
 
   try {
-    let listings = [];
+    let query =
+      search === "all"
+        ? {}
+        : {
+            $or: [
+              { category: { $regex: search, $options: "i" } },
+              { title: { $regex: search, $options: "i" } },
+            ],
+          };
+    const total = await Listing.countDocuments(query);
 
-    if (search === "all") {
-      listings = await Listing.find().populate("creator");
-    } else {
-      listings = await Listing.find({
-        $or: [
-          { category: { $regex: search, $options: "i" } },
-          { title: { $regex: search, $options: "i" } },
-        ],
-      }).populate("creator");
-    }
+    const listings = await Listing.find(query)
+      .populate("creator")
+      .skip((page - 1) * limit)
+      .limit(limit);
 
-    res.status(200).json(listings);
+    res.json({ results: listings, total: total }); 
   } catch (err) {
     res.status(409).json({
       message: "Failed to fetch listings",

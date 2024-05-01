@@ -17,6 +17,7 @@ const ListingDetails = () => {
   const [loading, setLoading] = useState(true);
   const { listingId } = useParams();
   const [listing, setListing] = useState(null);
+  const [isDateRangeSelected, setIsDateRangeSelected] = useState(false);
 
   const getListingDetails = async () => {
     try {
@@ -48,6 +49,7 @@ const ListingDetails = () => {
   const handleSelect = (ranges) => {
     // update selected date range when user makes a selection
     setDateRange([ranges.selection]);
+    setIsDateRangeSelected(true)
   };
 
   const start = new Date(dateRange[0].startDate);
@@ -58,6 +60,13 @@ const ListingDetails = () => {
   const customerId = useSelector((state) => state?.user?._id);
   const navigate = useNavigate();
   const handleSubmit = async () => {
+
+    if (!isDateRangeSelected) {
+      // If date range is not selected, return early
+      alert("Please select dates.");
+      return;
+    }
+    
     try {
       const bookingForm = {
         customerId,

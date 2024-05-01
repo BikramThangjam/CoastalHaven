@@ -145,7 +145,7 @@ const ListingCard = ({
             {startDate} - {endDate}
           </p>
           <div style={{display:"flex", justifyContent: "space-between", marginTop: "1.05rem"}}>
-            <p><span>${totalPrice}</span> total</p>
+            <p><span>&#8377;{totalPrice}</span> total</p>
             <button 
               className="cancel-btn" 
               onClick={handleCancelBooking}
