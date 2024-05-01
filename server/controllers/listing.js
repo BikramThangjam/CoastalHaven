@@ -114,6 +114,7 @@ export const getListingBySearch = async (req, res) => {
       .limit(limit);
 
     res.json({ results: listings, total: total }); 
+    
   } catch (err) {
     res.status(409).json({
       message: "Failed to fetch listings",
