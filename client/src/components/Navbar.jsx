@@ -9,30 +9,42 @@ import { API_URL } from "../config";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { setLogout } from "../redux/state";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [dropDownMenu, setDropDownMenu] = useState(false);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   return (
-    <div className="navbar">
+    <div className="navbar" style={{boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"}}>
       <a href="/">
         <img src="/assets/logo.png" alt="logo" />
       </a>
       <div className="navbar_search">
-        <input type="text" placeholder="search..." name="" id="" />
-        <IconButton>
-          <Search sx={{ color: "#F8395A" }} />
+        <input 
+          type="text" 
+          placeholder="search..." 
+          name="search" 
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          
+        />
+        <IconButton disabled={search === ""}  onClick={() =>{ navigate(`/properties/search/${search}`)}}>
+          <Search 
+            sx={{ color: "#F8395A" }}
+            />
         </IconButton>
       </div>
       <div className="navbar_right ">
         {user ? (
           <a className="host" href="/create-listing">
-            Become a Host
+            Publish property
           </a>
         ) : (
           <a className="host" href="/login">
-            Become a Host
+            Publish property
           </a>
         )}
 
@@ -61,11 +73,11 @@ const Navbar = () => {
 
         {dropDownMenu && user && (
           <div className="navbar_right_accountmenu">
-            <Link to="">Trip List</Link>
-            <Link to="">Wishlist</Link>
-            <Link to="">Property List</Link>
-            <Link to="">Reservation List</Link>
-            <Link to="">Become a Host </Link>
+            <Link to={`/${user._id}/trips`}>Trip List</Link>
+            <Link to={`/${user._id}/wishList`}>Wishlist</Link>
+            <Link to={`/${user._id}/properties`}>Property List</Link>
+            <Link to={`/${user._id}/reservations`}>Reservation List</Link>
+            <Link to="/create-listing">Publish Property</Link>
             <Link
               to="/login"
               onClick={() => {

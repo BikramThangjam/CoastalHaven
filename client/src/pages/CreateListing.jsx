@@ -9,6 +9,7 @@ import { BiTrash } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { API_URL } from "../config";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
 
 const CreateListing = () => {
   const [category, setCategory] = useState("");
@@ -208,7 +209,6 @@ const CreateListing = () => {
                   type="text"
                   name="aptSuite"
                   placeholder="Apt, Suite, etc., (if applicable)"
-                  required
                   onChange={handleChangeLocation}
                   value={formLocation.aptSuite}
                 />
@@ -449,7 +449,7 @@ const CreateListing = () => {
                 onChange={handleChangeDescription}
               />
               <p>Now, set your PRICE</p>
-              <span>$</span>
+              <span>&#8377;</span>
               <input
                 type="number"
                 placeholder="100"
@@ -464,6 +464,7 @@ const CreateListing = () => {
           <button className="submit_btn" type="submit">CREATE YOUR LISTING</button>
         </form>
       </div>
+      <Footer />
     </>
   );
 };

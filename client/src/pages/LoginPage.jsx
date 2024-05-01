@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,16 +23,19 @@ const LoginPage = () => {
         body: JSON.stringify({email, password})
       })
 
-      const loggedIn = await response.json();
-
-      if(loggedIn){
-        // console.log(loggedIn);
+      if(response.ok){
+        const loggedIn = await response.json();
         dispatch(setLogin({
           user: loggedIn.user,
           token: loggedIn.token
         }))
+        setError(null);
         navigate("/")
+      }else{
+        const err = await response.json()
+        setError(err)
       }
+      
 
     } catch (err) {
       console.log("Log in failed ", err.message);
@@ -44,6 +48,7 @@ const LoginPage = () => {
         <form action="" className='login_content_form' onSubmit={handleSubmit}>
          <input type="email" placeholder='Email' name="" value={email} onChange={(e)=>setEmail(e.target.value)}  id="email" required/>
          <input type="password" placeholder="password" name="" value={password} onChange={(e)=>setPassword(e.target.value)} id="password" required/>
+         {error && <p style={{color: "red"}}>{error.message}</p>}
          <button type="submit">Login</button>
         </form>
         <a href="/register">Don't have an account? Register here</a>

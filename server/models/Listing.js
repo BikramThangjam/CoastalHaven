@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const ListingSchema = mongoose.Schema({
+const ListingSchema = new mongoose.Schema({
   creator: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User                                                                      ',
+    ref: "User",                                                                    
   },
   category: {
     type: String,
@@ -19,7 +19,6 @@ const ListingSchema = mongoose.Schema({
   },
   aptSuite: {
     type: String,
-    required: true,
   },
   city: {
     type: String,
@@ -80,4 +79,4 @@ const ListingSchema = mongoose.Schema({
 
 const Listing = mongoose.model("Listing", ListingSchema );
 
-module.exports = Listing
+export default Listing;
