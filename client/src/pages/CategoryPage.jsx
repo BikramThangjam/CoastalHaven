@@ -23,7 +23,7 @@ const CategoryPage = () => {
         });
 
       const data = await response.json();
-      dispatch(setListings({ listings: data }));
+      dispatch(setListings({ listings: data.results }));
       setLoading(false);
     } catch (err) {
       console.log("Failed to fetch listings :: ", err.message);
@@ -41,7 +41,7 @@ const CategoryPage = () => {
       <Navbar />
       <h1 className="title-list">{category} listings</h1>
       <div className="list">
-        {listings.map(
+        {listings?.map(
           ({
             _id,
             creator,

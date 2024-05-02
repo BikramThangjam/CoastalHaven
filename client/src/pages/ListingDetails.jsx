@@ -13,6 +13,8 @@ import "../styles/ListingDetails.scss";
 import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
 
+import { loadStripe } from "@stripe/stripe-js";
+
 const ListingDetails = () => {
   const [loading, setLoading] = useState(true);
   const { listingId } = useParams();
@@ -49,7 +51,7 @@ const ListingDetails = () => {
   const handleSelect = (ranges) => {
     // update selected date range when user makes a selection
     setDateRange([ranges.selection]);
-    setIsDateRangeSelected(true)
+    setIsDateRangeSelected(true);
   };
 
   const start = new Date(dateRange[0].startDate);
@@ -59,16 +61,22 @@ const ListingDetails = () => {
   // Submit booking
   const customerId = useSelector((state) => state?.user?._id);
   const navigate = useNavigate();
-  const handleSubmit = async () => {
+
+  const handlePayment = async () => {
+    const stripe = await loadStripe(
+      "pk_test_51N8crmSHXPb5tMRo0q5TwITYN2zoB7fgCQ1xgsRUoAU3L6aob8ztumrNf3J8EalEqKHpVzsEnmUpJv3ng4G6JFKC00UAWdimEc"
+    );
 
     if (!isDateRangeSelected) {
       // If date range is not selected, return early
       alert("Please select dates.");
       return;
     }
-    
+
     try {
       const bookingForm = {
+        name: listing.title,
+        image: listing.listingPhotoPaths[0].replace("public", ""),
         customerId,
         listingId,
         hostId: listing.creator._id,
@@ -77,28 +85,43 @@ const ListingDetails = () => {
         totalPrice: listing.price * dayCount,
       };
 
-      const response = await fetch(`${API_URL}/bookings/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookingForm),
+      // Create a checkout session on your server
+      const response = await fetch(
+        `${API_URL}/bookings/create-checkout-session`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookingForm),
+        }
+      );
+
+      const session = await response.json();
+
+      // Redirect to Stripe checkout page
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id,
       });
 
-      if (response.ok) {
-        navigate(`/${customerId}/trips`);
+      if (result.error) {
+        console.log(result.error.message);
       }
+
+      // if (response.ok) {
+      //   navigate(`/${customerId}/trips`);
+      // }
     } catch (err) {
-      console.log("Submit booking failed ", err.message);
+      console.log("Booking failed ", err.message);
     }
   };
 
   // full image view
   const [fullImageOpen, setFullImageOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedImage, setSelectedImage] = useState("");
 
   const openFullImage = (src) => {
-    setSelectedImage(src)
+    setSelectedImage(src);
     setFullImageOpen(true);
   };
 
@@ -123,12 +146,16 @@ const ListingDetails = () => {
                 src={`${API_URL}/${photo.replace("public", "")}`}
                 alt="Listing photos"
                 className="thumbnail"
-                onClick={() => openFullImage(`${API_URL}/${photo.replace("public", "")}`)}
+                onClick={() =>
+                  openFullImage(`${API_URL}/${photo.replace("public", "")}`)
+                }
               />
 
               {fullImageOpen && (
                 <div className="full-image-view">
-                  <span className="close-button" onClick={closeFullImage}>&times;</span>
+                  <span className="close-button" onClick={closeFullImage}>
+                    &times;
+                  </span>
                   <img
                     src={selectedImage}
                     alt="Listing photos"
@@ -205,7 +232,7 @@ const ListingDetails = () => {
               <h2>Total Price: &#8377; {listing.price * dayCount}</h2>
               <p>Start Date: {dateRange[0].startDate.toDateString()}</p>
               <p>End Date: {dateRange[0].endDate.toDateString()}</p>
-              <button className="btn" onClick={handleSubmit}>
+              <button className="btn" onClick={handlePayment}>
                 BOOK NOW
               </button>
             </div>
