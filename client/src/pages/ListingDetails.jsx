@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { API_URL } from "../config";
 import { facilities } from "../data";
 import "react-date-range/dist/styles.css"; // main css file
@@ -60,6 +60,7 @@ const ListingDetails = () => {
 
   // Submit booking
   const customerId = useSelector((state) => state?.user?._id);
+  const navigate = useNavigate();
 
   const handlePayment = async () => {
     const stripe = await loadStripe(
@@ -103,8 +104,11 @@ const ListingDetails = () => {
         sessionId: session.id,
       });
 
+      console.log("stripe result :: ", result)
       if (result.error) {
         console.log(result.error.message);
+      }else{
+        navigate("/success")
       }
 
       // if (response.ok) {
