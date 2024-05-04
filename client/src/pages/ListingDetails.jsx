@@ -97,15 +97,15 @@ const ListingDetails = () => {
         }
       );
 
-      const session = await response.json();
+      const data = await response.json();
 
       // Redirect to Stripe checkout page
       const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
+        sessionId: data.id,
       });
 
       console.log("stripe result :: ", result)
-      
+
       if (result.error) {
         console.log(result.error.message);
       }else{
