@@ -23,6 +23,11 @@ const Listings = () => {
     setPage(newPage);
   };
 
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    setPage(1); // Reset page number to 1 when category changes
+  };
+
   const getFeedListings = async () => {
     try {
       const response = await fetch(
@@ -43,6 +48,7 @@ const Listings = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     getFeedListings();
   }, [selectedCategory, page]);
 
@@ -55,7 +61,7 @@ const Listings = () => {
               category.label === selectedCategory ? "selected" : ""
             }`}
             key={index}
-            onClick={() => setSelectedCategory(category.label)}
+            onClick={() => handleCategoryChange(category.label)}
           >
             <div className="category_icon">
               <category.icon />
