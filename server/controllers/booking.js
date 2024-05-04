@@ -11,6 +11,8 @@ export const stripeCheckout = async (req, res) => {
     const { name, imageUrl, customerId, listingId, hostId, startDate, endDate, totalPrice } = req.body;
 
     const session = await stripe.checkout.sessions.create({
+      success_url:`${client_url}/success`,
+      cancel_url:`${client_url}/cancel`,
       payment_method_types: ["card"],
       line_items: [
         {
@@ -25,6 +27,7 @@ export const stripeCheckout = async (req, res) => {
           quantity: 1,
         },
       ],
+      
       mode: "payment",
       metadata: {
         customerId,
@@ -34,7 +37,8 @@ export const stripeCheckout = async (req, res) => {
         endDate,
         totalPrice,
       },
-    });    
+    }); 
+
     res.json({ id: session.id });
   } catch (error) {
     console.error("Error creating checkout session:", error);

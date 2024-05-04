@@ -41,7 +41,7 @@ const TripList = () => {
         {loading ? (
           <SkeletonLoader />
         ) : tripList?.length < 1 ? (
-          <h3>You haven't booked your property yet!</h3>
+          <h3>You haven't booked any property yet!</h3>
         ) : (
           tripList?.map(
             (

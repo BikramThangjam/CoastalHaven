@@ -108,10 +108,8 @@ const ListingDetails = () => {
 
       if (result.error) {
         console.log(result.error.message);
-      }else{
-        navigate("/success")
       }
-
+      
     } catch (err) {
       console.log("Booking failed ", err.message);
     }
