@@ -14,14 +14,33 @@
     padding: 10px 30px;
   }
 
+  @include md{
+    gap: 5px;
+    align-items: flex-start;
+  }
+  
+  @include sm{
+    gap: 5px;
+    align-items: flex-start;
+  }
+
   &_left {
     max-width: 400px;
 
     img {
-      max-width: 150px;
+      max-width: 110px;
       margin-bottom: 20px;
       border-radius: 10%;
+
+      @include sm {
+        max-width: 50px;
+      }
+      @include md {
+        width: 80px;
+      }
     }
+
+   
 
     &_socials {
       display: flex;
@@ -69,7 +88,11 @@
     }
 
     @include md {
-      display: none;
+      font-size: 13px;
+    }
+
+    @include sm{
+      font-size: 10px;;
     }
   }
 
@@ -86,11 +109,22 @@
       p {
         margin-left: 20px;
         margin-bottom: 15px;
+
+        @include sm{
+          margin-left: 10px;
+          font-size: 10px;
+        }
       }
     }
 
     @include sm {
-      display: none;
+      img{
+        width: 100px;
+      }
+    }
+
+    @include md {
+      font-size: 13px;
     }
   }
 }

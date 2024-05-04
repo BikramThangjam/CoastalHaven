@@ -20,11 +20,15 @@ const Footer = () => {
       <div className="footer_right">
         <h3>Contact</h3>
         <div className="footer_right_info">
-          <LocalPhone />
+          <LocationOn sx={{ fontSize: { xs: '15px', sm: '20px' } }} />
+          <p>Bangalore, India</p>
+        </div>
+        <div className="footer_right_info">
+          <LocalPhone sx={{ fontSize: { xs: '15px', sm: '20px' } }}/>
           <p>+91 9875674324</p>
         </div>
         <div className="footer_right_info">
-          <Email />
+          <Email sx={{ fontSize: { xs: '15px', sm: '20px' } }}/>
           <p>coastalhaven@support.com</p>
         </div>
         <img src="https://res.cloudinary.com/doqjl4k7t/image/upload/v1714806479/coastalhaven/payment.png" alt="payment" />
