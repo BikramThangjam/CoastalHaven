@@ -26,8 +26,6 @@ export const stripeCheckout = async (req, res) => {
         },
       ],
       mode: "payment",
-      success_url: `${client_url}/success`,
-      cancel_url: `${client_url}/cancel`,
       metadata: {
         customerId,
         listingId,
@@ -53,7 +51,7 @@ export const stripeWebhooks = async (req, res) => {
     event = stripe.webhooks.constructEvent(
       req.body,
       req.headers["stripe-signature"],
-      process.env.STRIPE_WEBHOOK_SECRET_TEST
+      process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
     console.error("Error verifying Stripe webhook:", err.message);

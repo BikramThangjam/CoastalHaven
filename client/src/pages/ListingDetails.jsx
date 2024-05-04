@@ -85,7 +85,7 @@ const ListingDetails = () => {
         totalPrice: listing.price * dayCount,
       };
 
-      // Create a checkout session on your server
+      // Creates a checkout session on server
       const response = await fetch(
         `${API_URL}/bookings/create-checkout-session`,
         {
@@ -105,12 +105,13 @@ const ListingDetails = () => {
       });
 
       console.log("stripe result :: ", result)
+      
       if (result.error) {
         console.log(result.error.message);
       }else{
         navigate("/success")
       }
-      
+
     } catch (err) {
       console.log("Booking failed ", err.message);
     }
