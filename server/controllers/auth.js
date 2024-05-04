@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 // Register user
 export const register = async (req, res) => {
@@ -8,7 +9,7 @@ export const register = async (req, res) => {
         const {firstName, lastName, email, password} = req.body;
 
         // uploaded file available on req.file
-        const profileImage = req.file
+        let profileImage = req.file
 
         if(!profileImage){
             return res.status(400).send("No file uploaded")
@@ -17,6 +18,8 @@ export const register = async (req, res) => {
         // path to the uploaded profile image
         const profileImagePath = profileImage.path;
 
+        profileImage = await uploadOnCloudinary(profileImagePath);
+        
         // check if user exist
         const existingUser = await User.findOne({email})
         if(existingUser){
@@ -33,7 +36,7 @@ export const register = async (req, res) => {
             lastName, 
             email, 
             password: hashedPassword,
-            profileImagePath
+            profileImagePath: profileImage?.url || "",
         })
 
         // save the new user in db

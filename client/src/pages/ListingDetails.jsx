@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { API_URL } from "../config";
 import { facilities } from "../data";
 import "react-date-range/dist/styles.css"; // main css file
@@ -60,7 +60,6 @@ const ListingDetails = () => {
 
   // Submit booking
   const customerId = useSelector((state) => state?.user?._id);
-  const navigate = useNavigate();
 
   const handlePayment = async () => {
     const stripe = await loadStripe(
@@ -76,7 +75,7 @@ const ListingDetails = () => {
     try {
       const bookingForm = {
         name: listing.title,
-        image: listing.listingPhotoPaths[0].replace("public", ""),
+        imageUrl: listing.listingPhotoPaths[0],
         customerId,
         listingId,
         hostId: listing.creator._id,
@@ -143,11 +142,11 @@ const ListingDetails = () => {
           {listing.listingPhotoPaths?.map((photo, index) => (
             <div key={index}>
               <img
-                src={`${API_URL}/${photo.replace("public", "")}`}
+                src={photo}
                 alt="Listing photos"
                 className="thumbnail"
                 onClick={() =>
-                  openFullImage(`${API_URL}/${photo.replace("public", "")}`)
+                  openFullImage(photo)
                 }
               />
 
@@ -177,11 +176,8 @@ const ListingDetails = () => {
 
         <div className="profile">
           <img
-            src={`${API_URL}/${listing.creator.profileImagePath.replace(
-              "public",
-              ""
-            )}`}
-            alt=""
+            src={listing.creator.profileImagePath}
+            alt="profileImage"
           />
           <h3>
             Hosted by {listing.creator.firstName} {listing.creator.lastName}

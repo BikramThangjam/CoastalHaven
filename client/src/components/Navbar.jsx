@@ -2,10 +2,8 @@ import "../styles/Navbar.scss";
 import * as variables from "../styles/variables.scss";
 
 import React, { useState } from "react";
-import { Icon, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { Search, Person, Menu } from "@mui/icons-material";
-
-import { API_URL } from "../config";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { setLogout } from "../redux/state";
@@ -20,7 +18,7 @@ const Navbar = () => {
   return (
     <div className="navbar" style={{boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"}}>
       <a href="/">
-        <img src="/assets/logo.png" alt="logo" />
+        <img src="https://res.cloudinary.com/doqjl4k7t/image/upload/v1714806453/coastalhaven/logo.png" alt="logo" />
       </a>
       <div className="navbar_search">
         <input 
@@ -57,7 +55,7 @@ const Navbar = () => {
             <Person sx={{ color: "#F8395A" }} />
           ) : (
             <img
-              src={`${API_URL}/${user.profileImagePath.replace("public", "")}`}
+              src={user.profileImagePath}
               alt="profile photo"
               style={{ objectFit: "cover", borderRadius: "50%" }}
             />

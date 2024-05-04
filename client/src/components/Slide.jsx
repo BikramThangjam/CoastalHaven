@@ -6,23 +6,23 @@ import { Carousel } from "react-responsive-carousel";
 const images = [
   {
     label: "beach",
-    src: "../../public/assets/slides/beach2.jpg",
+    src: "https://res.cloudinary.com/doqjl4k7t/image/upload/v1714765558/coastalhaven/beach_slide.webp",
   },
   {
     label: "luxury",
-    src: "../../public/assets/slides/luxury.jpg",
+    src: "https://res.cloudinary.com/doqjl4k7t/image/upload/v1714765640/coastalhaven/luxury_slide.jpg",
   },
   {
     label: "island",
-    src: "../../public/assets/slides/island1.jpg",
+    src: "https://res.cloudinary.com/doqjl4k7t/image/upload/v1714765583/coastalhaven/island_slide.jpg",
   },
   {
     label: "cave",
-    src: "../../public/assets/slides/cave2.jpg",
+    src: "https://res.cloudinary.com/doqjl4k7t/image/upload/v1714765576/coastalhaven/cave_slide.jpg",
   },
   {
     label: "island",
-    src: "../../public/assets/slides/island2.jpg",
+    src: "https://res.cloudinary.com/doqjl4k7t/image/upload/v1714765611/coastalhaven/island2_slide.jpg",
   },
 ];
 

@@ -1,4 +1,5 @@
 import Listing from "../models/Listing.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 // Create Listing
 export const createListing = async (req, res) => {
@@ -28,7 +29,15 @@ export const createListing = async (req, res) => {
     if (!listingPhotos) {
       return res.status(400).send("No File uploaded");
     }
-    const listingPhotoPaths = listingPhotos.map((file) => file.path);
+    
+    const listingPhotoPaths = await Promise.all(listingPhotos.map(async (file) => {
+      const listingPhoto = await uploadOnCloudinary(file.path);
+      return listingPhoto.url;
+    }));
+
+
+    console.log("listingPhotoPaths :: ", listingPhotoPaths);
+
     const newListing = new Listing({
       creator,
       category,

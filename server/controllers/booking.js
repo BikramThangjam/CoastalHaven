@@ -2,12 +2,13 @@ import dotenv from "dotenv";
 dotenv.config();
 import Booking from "../models/Booking.js";
 import Stripe from "stripe";
+import { client_url } from "../url/clienturl.js";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Creating Stripe checkout session
 export const stripeCheckout = async (req, res) => {
   try {
-    const { name, image, customerId, listingId, hostId, startDate, endDate, totalPrice } = req.body;
+    const { name, imageUrl, customerId, listingId, hostId, startDate, endDate, totalPrice } = req.body;
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -17,6 +18,7 @@ export const stripeCheckout = async (req, res) => {
             currency: "inr",
             product_data: {
               name: name,
+              images:[imageUrl],
             },
             unit_amount: totalPrice * 100,
           },
@@ -24,8 +26,8 @@ export const stripeCheckout = async (req, res) => {
         },
       ],
       mode: "payment",
-      success_url: "http://localhost:5173/success",
-      cancel_url: "http://localhost:5173/cancel",
+      success_url: `${client_url}/success`,
+      cancel_url: `${client_url}/cancel`,
       metadata: {
         customerId,
         listingId,

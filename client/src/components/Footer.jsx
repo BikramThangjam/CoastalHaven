@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <div className='footer' style={{ boxShadow: '0px -2px 10px rgba(0, 0, 0, 0.1)', paddingTop: '20px', backgroundColor: '#f4f4f4' }}>
       <div className="footer_left">
-        <a href="/"><img src="/assets/logo.png" alt="logo" /></a>
+        <a href="/"><img src="https://res.cloudinary.com/doqjl4k7t/image/upload/v1714806453/coastalhaven/logo.png" alt="logo" /></a>
       </div>
       <div className="footer_center">
         <h3>Useful Links</h3>
@@ -27,7 +27,7 @@ const Footer = () => {
           <Email />
           <p>coastalhaven@support.com</p>
         </div>
-        <img src="/assets/payment.png" alt="payment" />
+        <img src="https://res.cloudinary.com/doqjl4k7t/image/upload/v1714806479/coastalhaven/payment.png" alt="payment" />
       </div>
     </div>
   )

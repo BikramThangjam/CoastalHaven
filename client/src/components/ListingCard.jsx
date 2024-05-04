@@ -113,7 +113,7 @@ const ListingCard = ({
           {listingPhotoPaths?.map((photo, index) => (
             <div className="slide" key={index}>
               <img
-                src={`${API_URL}/${photo?.replace("public", "")}`}
+                src={photo}
                 alt={`photo ${index + 1}`}
                 style={{ objectFit: "fill" }}
               />

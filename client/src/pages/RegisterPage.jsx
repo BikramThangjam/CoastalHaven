@@ -70,7 +70,7 @@ const RegisterPage = () => {
             
             <input type="file" name="profileImage" id="image" accept="image/*"onChange={handleChange} required style={{display: "none"}}/>
             <label htmlFor="image">
-              <img src="/assets/addImage.png" alt="add profile image" />
+              <img src="https://res.cloudinary.com/doqjl4k7t/image/upload/v1714806427/coastalhaven/addImage.png" alt="add profile image" />
               <p>Upload your profile image</p>
             </label>
 
