@@ -26,6 +26,8 @@ export const stripeCheckout = async (req, res) => {
         },
       ],
       mode: "payment",
+      success_url: `${client_url}/success`,
+      cancel_url: `${client_url}/cancel`,
       metadata: {
         customerId,
         listingId,
