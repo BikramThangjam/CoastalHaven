@@ -46,6 +46,7 @@ export const stripeCheckout = async (req, res) => {
 
 // Handle stripe webhook events
 export const stripeWebhooks = async (req, res) => {
+  console.log("stripeWebhooks is executing...")
   let event;
   
   try {
@@ -59,7 +60,10 @@ export const stripeWebhooks = async (req, res) => {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
+  console.log("event type :: ", event.type);
+
   if (event.type === "checkout.session.completed") {
+    console.log("inside the checkout.session.completed block");
     const session = event.data.object;
 
     // Check if metadata exists before accessing it
@@ -67,6 +71,7 @@ export const stripeWebhooks = async (req, res) => {
       const { customerId, listingId, hostId, startDate, endDate, totalPrice } = session.metadata;
 
       try {
+        console.log("creating new booking in mongodb...")
         const newBooking = await Booking.create({
           customerId,
           listingId,

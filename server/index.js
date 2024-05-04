@@ -14,7 +14,7 @@ app.use(cors());
 
 //Webhook payload must be provided as a string or a Buffer instance representing the _raw_ request body.
 //Hence placing it before the app.use(express.json()) to avoid being parsed to js object
-app.post("/webhooks/stripe",express.raw({type: 'application/json'}), stripeWebhooks)
+app.post("/webhook",express.raw({type: 'application/json'}), stripeWebhooks)
 
 app.use(express.json())
 app.use(express.static('public'));

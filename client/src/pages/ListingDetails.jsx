@@ -110,10 +110,7 @@ const ListingDetails = () => {
       }else{
         navigate("/success")
       }
-
-      // if (response.ok) {
-      //   navigate(`/${customerId}/trips`);
-      // }
+      
     } catch (err) {
       console.log("Booking failed ", err.message);
     }
