@@ -12,9 +12,14 @@
     height: 50vh;
   }
 
+  @include sm {
+    min-width: 100px;
+    height: 80%;
+  }
+
   .carousel {
     position: relative;
-
+    
     .overlay {
       position: absolute;
       top: 0;
