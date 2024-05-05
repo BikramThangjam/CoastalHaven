@@ -78,7 +78,10 @@ const ListingCard = ({
   const handleCancelBooking = async (e) => {
     e.stopPropagation();
     const response = await fetch(`${API_URL}/bookings/${id}`, {
-      method: "DELETE"
+      method: "DELETE",
+      headers: {
+        "Authorization" : `Bearer ${token}`,
+      },
     })
     
     if(isReserved){

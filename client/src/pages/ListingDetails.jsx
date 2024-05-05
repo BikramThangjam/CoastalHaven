@@ -16,6 +16,7 @@ import Footer from "../components/Footer";
 import { loadStripe } from "@stripe/stripe-js";
 
 const ListingDetails = () => {
+  const token = useSelector(state => state.token);
   const [loading, setLoading] = useState(true);
   const { listingId } = useParams();
   const [listing, setListing] = useState(null);
@@ -63,6 +64,9 @@ const ListingDetails = () => {
   const navigate = useNavigate();
 
   const handlePayment = async () => {
+    if(!token){
+      navigate("/login")
+    }
     const stripe = await loadStripe(
       "pk_test_51N8crmSHXPb5tMRo0q5TwITYN2zoB7fgCQ1xgsRUoAU3L6aob8ztumrNf3J8EalEqKHpVzsEnmUpJv3ng4G6JFKC00UAWdimEc"
     );
@@ -92,6 +96,7 @@ const ListingDetails = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization" : `Bearer ${token}`,
           },
           body: JSON.stringify(bookingForm),
         }
