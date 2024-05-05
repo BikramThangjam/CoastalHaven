@@ -64,9 +64,6 @@ const ListingDetails = () => {
   const navigate = useNavigate();
 
   const handlePayment = async () => {
-    if(!token){
-      navigate("/login")
-    }
     const stripe = await loadStripe(
       "pk_test_51N8crmSHXPb5tMRo0q5TwITYN2zoB7fgCQ1xgsRUoAU3L6aob8ztumrNf3J8EalEqKHpVzsEnmUpJv3ng4G6JFKC00UAWdimEc"
     );
@@ -75,6 +72,10 @@ const ListingDetails = () => {
       // If date range is not selected, return early
       alert("Please select dates.");
       return;
+    }
+
+    if(!token){
+      navigate("/login")
     }
 
     try {
