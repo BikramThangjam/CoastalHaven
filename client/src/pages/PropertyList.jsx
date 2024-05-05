@@ -5,7 +5,6 @@ import Navbar from "../components/Navbar";
 import ListingCard from "../components/ListingCard";
 import { API_URL } from "../config";
 import { setPropertyList } from "../redux/state";
-import Loader from "../components/Loader";
 import Footer from "../components/Footer";
 import SkeletonLoader from "../components/SkeletonLoader";
 
@@ -40,7 +39,9 @@ const PropertyList = () => {
       <div className="list">
         {loading ? (
           <SkeletonLoader />
-        ) : (
+        ) : propertyList?.length < 1 ? (
+          <h3>You haven't published any property yet!</h3>
+        ) :(
           propertyList.map(
             ({
               _id,
