@@ -30,6 +30,8 @@ const ListingCard = ({
   customer,
   createdAt
 }) => {
+
+  const token = useSelector(state => state.token);
   // Slider for images
   const [currentIndex, setCurrentIndex] = useState(0);
   const goToPrevSlide = (e) => {
